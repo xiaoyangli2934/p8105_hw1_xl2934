@@ -75,9 +75,8 @@ df2 = tibble(
   vec_num = as.numeric(vec_log),
   vec_fac = as.factor(vec_log),
 )
-summary(pull(df2, vec_fac))
 ```
-This data frame has `r nrow(df2)` rows and `r ncol(df2)` columns. The mean of `x` is `r mean(pull(df2, x))`. The median of `x` is `r median(pull(df2, x))`. The standard deviation of `x` is `r sd(pull(df2, x))`. The proportion of cases for which `x + y > 1` is `r summary(pull(df2, vec_fac))`
+This data frame has `r nrow(df2)` rows and `r ncol(df2)` columns. The mean of `x` is `r mean(pull(df2, x))`. The median of `x` is `r median(pull(df2, x))`. The standard deviation of `x` is `r sd(pull(df2, x))`. The proportion of cases for which `x + y > 1` is `r nrow(subset(df2, x + y >1))/500`
 ```{r problem 2_2}
 ggplot(df2, aes(x = x, y = y, colour = vec_log)) + geom_point() 
 ggsave("scatter_plot.pdf")
