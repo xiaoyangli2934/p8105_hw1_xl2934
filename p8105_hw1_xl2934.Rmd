@@ -14,7 +14,7 @@ Create a data frame comprised of:
 * a character vector of length 8
 * a factor vector of length 8, with 3 different factor “levels”
 
-```{r}
+```{r problem 1_1}
 library(tidyverse)
 
 # create data frame
@@ -35,7 +35,7 @@ mean(pull(df, var_fac))
 After take the mean of each variable, mean functoin can work for numeric and logical variable, but it can not work for character and factor.
 
 Apply `as.numeric` function to the logical, character, and factor variables in a code chunk.
-```{r, eval = FALSE}
+```{r problem 1_2, eval = FALSE}
 as.numeric(df$var_log)
 as.numeric(df$var_cha)
 as.numeric(df$var_fac)
@@ -48,11 +48,41 @@ In a second code chunk:
 * convert the logical vector to numeric, and multiply the random sample by the result
 * convert the logical vector to a factor, and multiply the random sample by the result
 * convert the logical vector to a factor and then convert the result to numeric, and multiply the random sample by the result
-```{r}
+```{r problem 1_3}
 multi1 = pull(df, var_num) * as.numeric(pull(df, var_log))
 as.factor(pull(df, var_log))
 multi2 = pull(df, var_num) * as.factor(pull(df, var_log))
 multi3 = pull(df, var_num) * as.numeric(as.factor(pull(df, var_log)))
 multi3
+```
+
+
+# Problem 2
+
+Create a data frame comprised of:
+* x: a random sample of size 500 from a standard Normal distribution
+* y: a random sample of size 500 from a standard Normal distribution
+* A logical vector indicating whether x + y > 1
+* A numeric vector created by coercing the above logical vector
+* A factor vector created by coercing the above logical vector
+
+```{r problem 2_1}
+# create a data frame 
+df2 = tibble(
+  x = rnorm(500),
+  y = rnorm(500), 
+  vec_log = x + y > 1,
+  vec_num = as.numeric(vec_log),
+  vec_fac = as.factor(vec_log),
+)
+summary(pull(df2, vec_fac))
+```
+This data frame has `r nrow(df2)` rows and `r ncol(df2)` columns. The mean of `x` is `r mean(pull(df2, x))`. The median of `x` is `r median(pull(df2, x))`. The standard deviation of `x` is `r sd(pull(df2, x))`. The proportion of cases for which `x + y > 1` is `r summary(pull(df2, vec_fac))`
+```{r problem 2_2}
+ggplot(df2, aes(x = x, y = y, colour = vec_log)) + geom_point() 
+ggsave("scatter_plot.pdf")
+ggplot(df2, aes(x = x, y = y, colour = vec_num)) + geom_point() 
+ggplot(df2, aes(x = x, y = y, colour = vec_fac)) + geom_point() 
+
 ```
 
