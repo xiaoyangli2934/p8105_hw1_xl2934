@@ -4,3 +4,55 @@ author: "Xiaoyang Li"
 date: "2019/9/13"
 output: github_document
 ---
+
+# Problem 1
+
+Create a data frame comprised of:
+
+* a random sample of size 8 from a standard Normal distribution
+* a logical vector indicating whether elements of the sample are greater than 0
+* a character vector of length 8
+* a factor vector of length 8, with 3 different factor “levels”
+
+```{r}
+library(tidyverse)
+
+# create data frame
+df = tibble(
+  var_num = rnorm(8),
+  var_log = var_num > 0,
+  var_cha = c("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island","Roosevelt Island", "U thant Island", "Marble Hill" ),
+  var_fac = factor(c("low", "medium", "high", "high", "medium", "low", "low", "medium"))
+)
+
+# calculate mean
+mean(pull(df, var_num))
+mean(pull(df, var_log))
+mean(pull(df, var_cha))
+mean(pull(df, var_fac))
+```
+
+After take the mean of each variable, mean functoin can work for numeric and logical variable, but it can not work for character and factor.
+
+Apply `as.numeric` function to the logical, character, and factor variables in a code chunk.
+```{r, eval = FALSE}
+as.numeric(df$var_log)
+as.numeric(df$var_cha)
+as.numeric(df$var_fac)
+```
+According to the result, logical and factor variable can be converted to numeic but character can not. Factor are arrange by the its first character order.  
+
+
+In a second code chunk:
+
+* convert the logical vector to numeric, and multiply the random sample by the result
+* convert the logical vector to a factor, and multiply the random sample by the result
+* convert the logical vector to a factor and then convert the result to numeric, and multiply the random sample by the result
+```{r}
+multi1 = pull(df, var_num) * as.numeric(pull(df, var_log))
+as.factor(pull(df, var_log))
+multi2 = pull(df, var_num) * as.factor(pull(df, var_log))
+multi3 = pull(df, var_num) * as.numeric(as.factor(pull(df, var_log)))
+multi3
+```
+
